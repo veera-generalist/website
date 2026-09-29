@@ -4,7 +4,7 @@ const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   // Self-contained server build for Docker / Cloud Run (SafetyWing self-hosts on GCP).
   output: "standalone",
-  poweredByHeader: true,
+  poweredByHeader: false,
   async redirects() {
     // One-page site (SPEC §4): the old standalone pages now live as home-page sections.
     return [
