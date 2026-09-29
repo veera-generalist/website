@@ -51,4 +51,5 @@ The full schema for projects and posts, with required fields marked, is in [SPEC
 
 - **Standards:** coding conventions live in [`.claude/rules/`](.claude/rules/), one file per topic (TypeScript, React/Next, styling, accessibility, motion, content/AEO, testing, git). Claude Code loads them automatically, and they're plain Markdown for humans too.
 - **Commits:** Conventional Commits, enforced by commitlint. Format and examples: [`.claude/rules/git.md`](.claude/rules/git.md).
+- **CI:** GitHub Actions runs `npm run check` on every push to `main` and every pull request (`.github/workflows/check.yml`). Run `npm run test:e2e` locally before pushing UI changes.
 - **Git hooks** (husky): pre-commit runs ESLint `--fix` + Prettier on staged files; commit-msg runs commitlint. If you use nvm, hooks load it via `~/.config/husky/init.sh`.
