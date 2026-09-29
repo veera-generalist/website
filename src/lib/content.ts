@@ -70,6 +70,17 @@ function required(data: Record<string, unknown>, key: string, slug: string): str
   return value;
 }
 
+// Catches `stack: Node.js` (a string, not a list) here, with the file named, rather
+// than as a vague `.join is not a function` deep in a render.
+function stringList(data: Record<string, unknown>, key: string, slug: string): string[] {
+  const value = data[key];
+  if (value === undefined || value === null) return [];
+  if (!Array.isArray(value) || !value.every((item) => typeof item === "string")) {
+    throw new Error(`content/${slug}: frontmatter field "${key}" must be a list of strings`);
+  }
+  return value;
+}
+
 // gray-matter parses unquoted YYYY-MM-DD as a Date; normalize back to a string.
 function dateString(value: unknown): string | undefined {
   if (value instanceof Date) return value.toISOString().slice(0, 10);
@@ -89,10 +100,10 @@ function normalizeProject(slug: string, data: Record<string, unknown>): ProjectM
     tldr: required(d, "tldr", `projects/${slug}`),
     date: required(d, "date", `projects/${slug}`),
     updated: d.updated,
-    outcomes: (d.outcomes as string[]) ?? [],
+    outcomes: stringList(d, "outcomes", `projects/${slug}`),
     role: d.role as string | undefined,
-    stack: (d.stack as string[]) ?? [],
-    tags: (d.tags as string[]) ?? [],
+    stack: stringList(d, "stack", `projects/${slug}`),
+    tags: stringList(d, "tags", `projects/${slug}`),
     cover: d.cover as string | undefined,
     links: d.links as ProjectMeta["links"],
     featured: Boolean(d.featured),
@@ -114,7 +125,7 @@ function normalizePost(slug: string, data: Record<string, unknown>): PostMeta {
     description: required(d, "description", `writing/${slug}`),
     tldr: d.tldr as string | undefined,
     faq: d.faq as FaqItem[] | undefined,
-    tags: (d.tags as string[]) ?? [],
+    tags: stringList(d, "tags", `writing/${slug}`),
     draft: Boolean(d.draft),
   };
 }

@@ -59,3 +59,20 @@ describe("getFeaturedProjects", () => {
     expect(getFeaturedProjects().map((p) => p.meta.slug)).toEqual(["a"]);
   });
 });
+
+describe("list fields", () => {
+  it("throws a helpful error when a list field is a plain string", async () => {
+    const { getProjects } = await loadWith({
+      "projects/typo.mdx":
+        "---\ntitle: T\nsummary: s\ntldr: t\ndate: 2025-01\nstack: Node.js\n---\n",
+    });
+    expect(() => getProjects()).toThrow(
+      /projects\/typo: frontmatter field "stack" must be a list of strings/,
+    );
+  });
+
+  it("defaults missing list fields to empty", async () => {
+    const { getPosts } = await loadWith({ "writing/p.mdx": post("P", "2026-01-01") });
+    expect(getPosts()[0].meta.tags).toEqual([]);
+  });
+});
