@@ -2,26 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    @apply scroll-smooth;
   }
-}
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-sun ring-offset-2 ring-offset-white;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/*
+ * Hero parallax (docs/animations.md, Recipe A adapted for a top-of-page hero).
+ * Each layer drifts down by --depth px over the first viewport of scroll, so
+ * bigger depth = slower apparent motion = further away. Native CSS scroll
+ * timeline where supported; otherwise HeroParallax sets --p (0→1) from JS.
+ */
+.hero-parallax-layer {
+  translate: 0 calc(var(--p, 0) * var(--depth, 0) * 1px);
+  will-change: translate;
+}
+
+@supports (animation-timeline: scroll()) {
+  .hero-parallax-layer {
+    animation-name: hero-parallax;
+    animation-duration: auto;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root);
+    animation-range: 0 100vh;
+  }
+}
+
+@keyframes hero-parallax {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 calc(var(--depth, 0) * 1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .hero-parallax-layer {
+    animation: none;
+    translate: none;
   }
 }

@@ -1,0 +1,24 @@
+---
+title: Why I rebuilt my portfolio for AI search
+date: 2026-09-29
+description: How I structured this site so answer engines like ChatGPT, Claude and Perplexity can understand and cite it.
+tldr: I made every page server-rendered, added llms.txt and Markdown mirrors, and published one connected Schema.org graph about me, so AI assistants can answer questions about my work accurately.
+tags: [AEO, Next.js]
+draft: true # placeholder: hidden in production until there are real posts
+faq:
+  - q: What is AEO?
+    a: Answer Engine Optimization — structuring content so AI assistants and answer engines can find, understand and cite it.
+  - q: What is llms.txt?
+    a: A proposed standard file at a site's root that gives language models a concise, Markdown index of the site's content.
+---
+
+> Placeholder post — replace or delete. The Writing section hides itself from navigation when there are no posts.
+
+More and more people ask an AI assistant instead of typing into a search box. That changes what "being findable" means for a personal site.
+
+## What did I change?
+
+1. **Everything is in the HTML.** Pages are statically generated, so crawlers that don't run JavaScript still see all the content.
+2. **A Markdown version of every page.** Append `.md` to any project or post URL, or read [/llms.txt](/llms.txt).
+3. **One entity, one graph.** Every page's JSON-LD points to the same `Person` node, with links to my other profiles.
+4. **Answer-first writing.** Each case study opens with a one-sentence TL;DR and quantified outcomes.

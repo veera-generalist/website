@@ -1,0 +1,43 @@
+---
+title: Sample Analytics Dashboard
+summary: A real-time analytics dashboard for a SaaS product, replacing a slow legacy reporting tool.
+tldr: I rebuilt a SaaS company's reporting dashboard in Next.js and Postgres, cutting median page load from 6.2s to 1.1s and doubling weekly active usage.
+date: 2025-03
+updated: 2026-09-29
+role: Lead engineer (team of 3)
+stack: [Next.js, TypeScript, Postgres, Tailwind CSS]
+tags: [Web app, Performance]
+outcomes:
+  - Median page load cut from 6.2s to 1.1s
+  - Weekly active usage up 2x in 3 months
+  - Legacy reporting service retired
+cover: /images/projects/sample-dashboard.svg
+links:
+  live: https://example.com
+  github: https://github.com/your-handle/sample-dashboard
+featured: true
+---
+
+> Placeholder case study — replace with your own project. Keep the structure: it's written so both people and AI answer engines can extract the key facts quickly.
+
+## What problem did this solve?
+
+Customers relied on a legacy reporting tool that took several seconds to load each chart and often timed out on large accounts. Support tickets about slow reports were the #1 category.
+
+## What was my role?
+
+I led a team of three engineers, owned the architecture, and built the data-fetching layer and chart components.
+
+## How did I approach it?
+
+- Moved aggregation into materialized views in Postgres, refreshed every minute.
+- Rendered dashboards with React Server Components so charts stream in as data arrives.
+- Added a shared chart library with consistent, accessible colors.
+
+## Which stack did I use and why?
+
+**Next.js** for server rendering and streaming, **Postgres** because the data already lived there, and **Tailwind CSS** for fast, consistent styling.
+
+## What were the results?
+
+Median load time dropped from 6.2s to 1.1s, weekly active usage doubled within three months, and the legacy service was shut down.
