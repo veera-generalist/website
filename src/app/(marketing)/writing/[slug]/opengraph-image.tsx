@@ -10,7 +10,7 @@ export function generateStaticParams() {
   return getPosts().map((p) => ({ slug: p.meta.slug }));
 }
 
-export default function Image({ params }: { params: { slug: string } }) {
+export default function OpengraphImage({ params }: { params: { slug: string } }) {
   const post = getPost(params.slug);
   return new ImageResponse(
     <OgCard

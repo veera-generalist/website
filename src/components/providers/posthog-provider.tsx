@@ -7,7 +7,7 @@ const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const host = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
 
 // Referrers/utm sources that indicate a visit from an AI assistant (SPEC §10.6).
-const AI_SOURCES = [
+const aiSources = [
   "chatgpt.com",
   "chat.openai.com",
   "perplexity.ai",
@@ -26,7 +26,7 @@ function detectAiSource(): string | null {
   } catch {
     // ignore malformed referrers
   }
-  return AI_SOURCES.find((s) => utm.includes(s) || referrer.endsWith(s)) ?? null;
+  return aiSources.find((s) => utm.includes(s) || referrer.endsWith(s)) ?? null;
 }
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {

@@ -4,7 +4,7 @@ import { absoluteUrl } from "@/lib/utils";
 
 export const dynamic = "force-static";
 
-const escape = (s: string) =>
+const escapeXml = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 export function GET() {
@@ -12,11 +12,11 @@ export function GET() {
     .map(({ meta }) => {
       const url = absoluteUrl(`/writing/${meta.slug}`);
       return `    <item>
-      <title>${escape(meta.title)}</title>
+      <title>${escapeXml(meta.title)}</title>
       <link>${url}</link>
       <guid>${url}</guid>
       <pubDate>${new Date(meta.date).toUTCString()}</pubDate>
-      <description>${escape(meta.description)}</description>
+      <description>${escapeXml(meta.description)}</description>
     </item>`;
     })
     .join("\n");
@@ -24,9 +24,9 @@ export function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${escape(profile.name)} — Writing</title>
+    <title>${escapeXml(profile.name)} — Writing</title>
     <link>${absoluteUrl("/writing")}</link>
-    <description>${escape(profile.pitch)}</description>
+    <description>${escapeXml(profile.pitch)}</description>
     <language>en</language>
     <atom:link href="${absoluteUrl("/feed.xml")}" rel="self" type="application/rss+xml"/>
 ${items}
