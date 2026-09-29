@@ -1,13 +1,8 @@
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
-import { getFeaturedProjects, getPosts } from "@/lib/content";
+import { getPosts } from "@/lib/content";
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
-  const projects = getFeaturedProjects(4).map(({ meta }) => ({
-    slug: meta.slug,
-    title: meta.title,
-    summary: meta.summary,
-  }));
   const showWriting = getPosts().length > 0;
 
   return (
@@ -18,7 +13,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
       >
         Skip to content
       </a>
-      <Header projects={projects} showWriting={showWriting} />
+      <Header />
       <main id="main">{children}</main>
       <Footer showWriting={showWriting} />
     </>

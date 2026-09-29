@@ -13,7 +13,7 @@
 - [x] SEO (sitemap, RSS, OG images, metadata)
 - [~] AEO/GEO: JSON-LD graph, llms.txt, Markdown mirrors, AI-crawler robots rules and AI-referral tracking done. **IndexNow script pending.**
 - [x] Animation teardown of safetywing.com → [docs/animations.md](docs/animations.md)
-- [x] Animations: scroll parallax hero, orbit accents, staggered load-in, 3D mega-menu, typing role (see docs/animations.md, "What to adopt")
+- [x] Animations: scroll parallax hero, orbit accents, staggered load-in, typing role (3D mega-menu built, then removed with the header nav) (see docs/animations.md, "What to adopt")
 - [ ] Next animation picks: pointer parallax, tech-stack marquee, Lottie accents (optional)
 - [ ] Replace placeholder hero art (SVG layers in `hero-scene.tsx`) with real illustrations
 - [x] Coding standards: `.claude/rules/` (8 topic files), Prettier + Tailwind sorting, stricter ESLint, Claude auto-fix hook, husky + lint-staged + commitlint, Vitest + Playwright/axe
@@ -66,7 +66,7 @@ Reference: SafetyWing's stack as fingerprinted from its live site on 2026-09-29.
 
 ## 4. Pages & routes
 
-**One-page site.** The home page holds the Work, About and Contact sections; each case study keeps its own page for linking, sharing and AI citations. All pages sit in the `(marketing)` route group, sharing the header and footer. The header nav is anchor links (`/#work`, `/#about`), plus a "Get in touch" button (`/#contact`).
+**One-page site.** The home page holds the Work, About and Contact sections; each case study keeps its own page for linking, sharing and AI citations. All pages sit in the `(marketing)` route group, sharing the header and footer. The header is just the name (home) and a "Get in touch" button (`/#contact`); section links live in the hero CTAs and the footer.
 
 | Route                                                    | Rendering   | Content                                                                                                                                                                                                                                             |
 | -------------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -101,8 +101,8 @@ src/
     feed.xml/ llms.txt/ llms-full.txt/  sitemap.ts robots.ts opengraph-image.tsx
     not-found.tsx error.tsx global-error.tsx
   components/
-    ui/          # hand-written shadcn-style primitives (button, sheet, navigation-menu)
-    layout/      # header, mobile-nav, footer
+    ui/          # hand-written shadcn-style primitives (button)
+    layout/      # header, footer
     sections/    # hero, hero-scene, about-section, contact-section, experience-timeline, skills-grid
     motion/      # hero-parallax, orbit, reveal, typing-text
     providers/   # posthog-provider, motion-provider
@@ -159,12 +159,12 @@ Profile, experience and skills are plain TypeScript objects with exported types,
 
 ## 7. UI & design
 
-- **Header:** fixed, transparent over the hero and solid on scroll. Desktop: a Radix NavigationMenu with a Work mega-menu (3D tilt-in) and an About anchor, plus the "Get in touch" button. Mobile: a Sheet menu with Work, About and Contact (and Writing when there are posts).
+- **Header:** fixed, transparent over the hero and solid on scroll. Just the name (links home) and a "Get in touch" button (`/#contact`) at every screen size. No nav menu: the hero CTAs, the case-study "All work" link and the footer cover navigation.
 - **Hero:** static `<h1>` (name + role), typing roles line, short bio and two CTAs, over a three-layer scroll-parallax scene with orbiting accents. The artwork is placeholder SVG until real illustrations arrive.
 - **Project cards:** cover image, title, summary, stack chips, and hover lift.
 - **Experience:** vertical timeline.
 - **Theme:** named brand colors in `tailwind.config.ts` (`ink`, `sun`, `mist`). Light mode first; a dark mode toggle is optional.
-- **Motion:** SafetyWing-style signature motion (see `docs/animations.md`). Shipped: CSS root scroll-timeline parallax with a framer-motion fallback, `offset-path` orbits, staggered load-ins, typing roles, the mega-menu tilt, and the page-entrance slide. Planned: pointer parallax, a tech-stack marquee, and Lottie accents. Implementation rules: `.claude/rules/motion.md`.
+- **Motion:** SafetyWing-style signature motion (see `docs/animations.md`). Shipped: CSS root scroll-timeline parallax with a framer-motion fallback, `offset-path` orbits, staggered load-ins, typing roles, and the page-entrance slide. (The 3D mega-menu tilt was removed with the header nav; it's in git history at `2b3741e`.) Planned: pointer parallax, a tech-stack marquee, and Lottie accents. Implementation rules: `.claude/rules/motion.md`.
 - **Responsive:** mobile-first, usable from 360px with no horizontal overflow.
 - **Accessibility:** WCAG 2.1 AA. Rules in `.claude/rules/accessibility.md`, gated by the axe scan in `e2e/quality.spec.ts`.
 
@@ -251,16 +251,16 @@ Checked items are verified automatically by `npm run check` / `npm run test:e2e`
 - [x] Lint, typecheck, formatting and unit tests pass (`npm run check`).
 - [x] `npm run build` succeeds with **no** env vars set; project and post pages are SSG.
 - [x] Every page, project, post, `.md` mirror and machine route returns 200 with the right content type; old pages 308 to their sections; unknown routes 404 (`e2e/routes.spec.ts`).
-- [x] Header anchors scroll to their home sections; one `/#contact` link on desktop, Contact in the mobile menu (`e2e/quality.spec.ts`).
+- [x] Header is exactly the name and "Get in touch" (`/#contact`) at 1440px and 390px; the hero CTA scrolls to `#work` (`e2e/quality.spec.ts`).
 - [x] Adding a new `.mdx` project or post publishes it with no code changes (routes and tests pick up slugs from `content/`).
 - [x] Editing `src/data/profile.ts` updates the name, bio and socials site-wide (single identity source).
 - [x] Page text is in the server HTML without JS; `/robots.txt` allows the AI crawlers (`e2e/routes.spec.ts`).
 - [x] JSON-LD `@id`s link into one graph on every page (`src/lib/jsonld.test.ts`, `e2e/quality.spec.ts`).
 - [x] Every project page shows a TL;DR and Published/Updated dates.
 - [x] No serious or critical axe violations, exactly one `<h1>`, no console errors (in both motion modes) and no overflow at 390px (`e2e/quality.spec.ts`).
-- [x] Parallax, reduced motion and the mega-menu behave as specified (`e2e/motion.spec.ts`).
+- [x] Parallax and reduced motion behave as specified (`e2e/motion.spec.ts`).
 - [x] Two sample projects and one sample post (draft) included; no create-next-app boilerplate left.
-- [ ] The nav is fully keyboard-operable (Radix provides it, but there's no explicit test yet).
+- [ ] All interactive elements are keyboard-operable (no explicit keyboard test yet).
 - [ ] Each integration activates when its env var **is** set (the no-op path is verified; the active path isn't).
 - [ ] JSON-LD passes Google's Rich Results Test and the Schema.org validator (external tools; check once deployed).
 - [ ] Lighthouse ≥ 90 in all four categories on `/` and a project page (check once deployed).
@@ -277,6 +277,7 @@ Checked items are verified automatically by `npm run check` / `npm run test:e2e`
 
 ## Changelog
 
+- **2026-09-29**: Header reduced to name + "Get in touch" at all sizes. Removed the Work/About links, the Work mega-menu (with its 3D tilt) and the mobile menu, along with `navigation-menu`, `sheet`, `mobile-nav`, the `scale-in/out` keyframes and two Radix packages (all recoverable from `2b3741e`). `mainNav` is now `footerNav`. E2E builds use a separate `.next-e2e` folder, so they can run alongside `npm run dev`, and the web-server timeout is 10 min for busy machines.
 - **2026-09-29**: Switched to a **one-page site**. Home now holds Work, About (bio, experience, skills, FAQ, résumé) and Contact as anchored sections. The standalone `/about`, `/projects` and `/contact` pages are removed and 308-redirect to their sections. Case studies keep `/projects/[slug]` with an "All work" back link. The nav is Work · About, plus the "Get in touch" button. `ProfilePage` and FAQ JSON-LD moved to `/`. The sample post is now a draft, so Writing (nav, sitemap, `/writing`) stays hidden until there are real posts. The sitemap and llms.txt are updated; tests cover redirects, anchors and the hidden Writing section (38 e2e).
 - **2026-09-29**: Removed the duplicate "Contact" nav link on desktop; the "Get in touch" button covers it. It stays in the mobile menu, where the button is hidden, and in the footer. Covered by a header test in `e2e/quality.spec.ts`.
 - **2026-09-29**: Cleanup. Replaced the create-next-app favicon with a brand `src/app/icon.svg` (placeholder until there's a logo; covered by `routes.spec.ts`), removed the unused Geist Mono font and `class-variance-authority`, and dropped a redundant permission. `lottie-react` is kept for the planned Lottie accents.

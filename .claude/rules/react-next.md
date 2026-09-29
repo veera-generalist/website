@@ -13,4 +13,4 @@ paths:
 - Use `next/link` for internal links and `next/image` for images (explicit `width`/`height` or `fill` + `sizes`). Put `priority` only on the LCP image.
 - In Next 14, `params` is a plain object (not a Promise). Type it as `{ params: { slug: string } }`.
 - **Component shape:** props typed inline or as a local `type Props`; `forwardRef` only for primitives in `src/components/ui/`; one exported component per file, plus small private helpers.
-- **Folder placement:** `components/ui` = design-system primitives; `components/layout` = header/footer/nav; `components/sections` = home-page and shared page sections; `components/motion` = animation primitives; route-private components live beside their route (e.g. next to `projects/[slug]/page.tsx`).
+- **Folder placement:** `components/ui` = design-system primitives; `components/layout` = header/footer; `components/sections` = home-page and shared page sections; `components/motion` = animation primitives; route-private components live beside their route (e.g. next to `projects/[slug]/page.tsx`).

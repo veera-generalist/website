@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { SocialLinks } from "@/components/social-links";
-import { mainNav } from "@/data/navigation";
+import { footerNav } from "@/data/navigation";
 import { profile } from "@/data/profile";
 
 export function Footer({ showWriting }: { showWriting: boolean }) {
-  const nav = mainNav.filter((item) => showWriting || item.href !== "/writing");
+  const nav = footerNav.filter((item) => showWriting || item.href !== "/writing");
 
   return (
     <footer className="bg-ink text-white">

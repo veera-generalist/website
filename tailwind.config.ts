@@ -32,19 +32,9 @@ const config: Config = {
       // Motion vocabulary from the SafetyWing teardown (docs/animations.md).
       keyframes: {
         "follow-path": { to: { offsetDistance: "100%" } },
-        "scale-in": {
-          "0%": { opacity: "0.5", transform: "rotateX(-30deg) scale(0.9)" },
-          "100%": { opacity: "1", transform: "rotateX(0deg) scale(1)" },
-        },
-        "scale-out": {
-          "0%": { opacity: "1", transform: "rotateX(0deg) scale(1)" },
-          "100%": { opacity: "0", transform: "rotateX(-10deg) scale(0.95)" },
-        },
         blink: { "50%": { opacity: "0" } },
       },
       animation: {
-        "scale-in": "scale-in 0.2s ease",
-        "scale-out": "scale-out 0.2s ease",
         blink: "blink 0.7s step-end infinite",
       },
     },

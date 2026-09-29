@@ -25,26 +25,26 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
   });
 }
 
-test("nav anchors scroll to their home-page sections", async ({ page }) => {
+test("hero CTA scrolls to the work section", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await page.locator("header nav").getByRole("link", { name: "About" }).click();
-  await expect(page).toHaveURL(/\/#about$/);
-  await expect(page.locator("#about")).toBeInViewport();
+  await page.getByRole("link", { name: "View my work" }).click();
+  await expect(page).toHaveURL(/\/#work$/);
+  await expect(page.locator("#work")).toBeInViewport();
 });
 
-test("header links to #contact once on desktop and keeps Contact in the mobile menu", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
-  await expect(page.locator('header a[href="/#contact"]:visible')).toHaveCount(1);
-  await expect(page.locator('header a[href="/#contact"]:visible')).toHaveText(/Get in touch/);
-
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.getByRole("button", { name: "Open menu" }).click();
-  await expect(page.getByRole("dialog").getByRole("link", { name: "Contact" })).toBeVisible();
-});
+for (const width of [1440, 390]) {
+  test(`header is just the name and "Get in touch" at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const links = page.locator("header a:visible");
+    await expect(links).toHaveCount(2);
+    await expect(links.nth(0)).toHaveAttribute("href", "/");
+    await expect(links.nth(1)).toHaveAttribute("href", "/#contact");
+    await expect(links.nth(1)).toHaveText(/Get in touch/);
+    await expect(page.locator("header button")).toHaveCount(0);
+  });
+}
 
 for (const route of pages) {
   test(`${route} has no serious or critical accessibility violations`, async ({ page }) => {

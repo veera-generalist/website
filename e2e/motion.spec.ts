@@ -43,15 +43,3 @@ test.describe("reduced motion", () => {
     expect(second!.y - first!.y).toBeCloseTo(-450, 0);
   });
 });
-
-test("work mega-menu opens with the 3D scale-in animation", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Work" }).hover();
-  const viewport = page.locator('div[class*="radix-navigation-menu-viewport-height"]');
-  await expect(viewport).toHaveAttribute("data-state", "open");
-  const info = await viewport.evaluate((el) => ({
-    animation: getComputedStyle(el).animationName,
-    perspective: getComputedStyle(el.parentElement!).perspective,
-  }));
-  expect(info).toEqual({ animation: "scale-in", perspective: "2000px" });
-});

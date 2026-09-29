@@ -159,7 +159,7 @@ Radix Accordion using `accordion-down` and `accordion-up` keyframes, which anima
 | Orbiting accents                                                      | `src/components/motion/orbit.tsx`                                                                                                   |
 | Staggered load-in (decor fades; text only rises, never fades)         | `hero-scene.tsx` (`enter`), `hero.tsx` (`rise`)                                                                                     |
 | Typing roles                                                          | `src/components/motion/typing-text.tsx`, `profile.roles`                                                                            |
-| 3D mega-menu                                                          | `src/components/ui/navigation-menu.tsx`, `scale-in`/`scale-out` in `tailwind.config.ts`                                             |
+| ~~3D mega-menu~~                                                      | Removed with the header nav (one-page site); recoverable from commit `2b3741e`                                                      |
 | Reduced motion (framer)                                               | `src/components/providers/motion-provider.tsx`                                                                                      |
 
 The hero uses a **root** scroll timeline (`scroll(root)`, range `0 100vh`) rather than Recipe A's `view()` timeline, because the hero is always at the top of the page.
