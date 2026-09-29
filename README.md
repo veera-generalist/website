@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio
 
-## Getting Started
+Personal portfolio site. Stack mirrors safetywing.com (Next.js 14, React 18, Tailwind v3, Radix/shadcn, framer-motion), using free tools and service tiers only, and it's optimized for AI answer engines (AEO/GEO). See [SPEC.md](SPEC.md) for the full spec and progress.
 
-First, run the development server:
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # optional — everything works with no env vars
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Checks: `npm run check` (lint, types, formatting, unit tests) and `npm run test:e2e` (Playwright). See [Contributing](#contributing).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Editing content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| What                           | Where                                                                             |
+| ------------------------------ | --------------------------------------------------------------------------------- |
+| Name, bio, socials, email, FAQ | `src/data/profile.ts` (single source of truth; feeds pages, JSON-LD and llms.txt) |
+| Work history                   | `src/data/experience.ts`                                                          |
+| Skills                         | `src/data/skills.ts`                                                              |
+| Projects                       | `content/projects/<slug>.mdx`                                                     |
+| Posts                          | `content/writing/<slug>.mdx` (Writing hides from nav when empty)                  |
+| Résumé                         | `public/resume.pdf`                                                               |
+| Brand colors                   | `tailwind.config.ts` (`ink`, `sun`, `mist`)                                       |
 
-## Learn More
+### Frontmatter
 
-To learn more about Next.js, take a look at the following resources:
+The full schema for projects and posts, with required fields marked, is in [SPEC.md §6](SPEC.md#6-content-model). Missing required fields fail the build with a message naming the file.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## AI / answer-engine endpoints
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `/llms.txt`, `/llms-full.txt`
+- Markdown mirrors: `/about.md`, `/projects/<slug>.md`, `/writing/<slug>.md`
+- `/robots.txt` explicitly allows AI crawlers (edit the list in `src/app/robots.ts`)
+- JSON-LD graph builders: `src/lib/jsonld.ts`
 
-## Deploy on Vercel
+## Deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Vercel Hobby (free):** import the repo and set `NEXT_PUBLIC_SITE_URL` to your domain.
+- **Docker / Cloud Run:** `docker build --build-arg NEXT_PUBLIC_SITE_URL=https://your-domain.com -t portfolio .`, then run it on port 8080.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+
+| Script               | What it does                                                                                           |
+| -------------------- | ------------------------------------------------------------------------------------------------------ |
+| `npm run check`      | Lint + typecheck + Prettier check + Vitest unit tests                                                  |
+| `npm run test:e2e`   | Builds, serves on :3100, runs Playwright (routes, accessibility via axe, motion, AEO) in system Chrome |
+| `npm run format`     | Formats everything with Prettier (Tailwind classes sorted)                                             |
+| `npm run test:watch` | Vitest in watch mode                                                                                   |
+
+- **Standards:** coding conventions live in [`.claude/rules/`](.claude/rules/), one file per topic (TypeScript, React/Next, styling, accessibility, motion, content/AEO, testing, git). Claude Code loads them automatically, and they're plain Markdown for humans too.
+- **Commits:** Conventional Commits, enforced by commitlint. Format and examples: [`.claude/rules/git.md`](.claude/rules/git.md).
+- **Git hooks** (husky): pre-commit runs ESLint `--fix` + Prettier on staged files; commit-msg runs commitlint. If you use nvm, hooks load it via `~/.config/husky/init.sh`.
