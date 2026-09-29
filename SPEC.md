@@ -16,7 +16,7 @@
 - [x] Animations: scroll parallax hero, orbit accents, staggered load-in, typing role (3D mega-menu built, then removed with the header nav) (see docs/animations.md, "What to adopt")
 - [ ] Next animation picks: pointer parallax, tech-stack marquee, Lottie accents (optional)
 - [ ] Replace placeholder hero art (SVG layers in `hero-scene.tsx`) with real illustrations
-- [x] Coding standards: `.claude/rules/` (8 topic files), Prettier + Tailwind sorting, stricter ESLint, Claude auto-fix hook, husky + lint-staged + commitlint, Vitest + Playwright/axe
+- [x] Coding standards: `.claude/rules/` (8 topic files), Prettier + Tailwind sorting, stricter ESLint, Claude auto-fix hook, husky + lint-staged + commitlint, Vitest + Playwright/axe, GitHub Actions CI (`npm run check`)
 - [ ] Real content (profile, projects, experience, résumé, brand colors)
 - [ ] Deployed
 
@@ -93,6 +93,7 @@ public/                              # resume.pdf, images/
 docs/animations.md                   # SafetyWing motion teardown + recipes
 e2e/*.spec.ts                        # Playwright: routes, quality/a11y, motion
 .claude/                             # Claude Code: rules/, hooks/, commands/, settings.json
+.github/workflows/check.yml          # CI: npm run check on push to main and PRs
 src/
   app/
     layout.tsx  template.tsx         # fonts + providers; page-entrance slide
@@ -277,6 +278,7 @@ Checked items are verified automatically by `npm run check` / `npm run test:e2e`
 
 ## Changelog
 
+- **2026-09-29**: Pre-push standards review. About-section subsection headings are now `h4` (Experience/Skills sit under an `h3`). Frontmatter list fields (`outcomes`, `stack`, `tags`) are validated with a file-named error instead of cast. Names aligned with `.claude/rules/typescript.md` (`aiSources`, `escapeXml`, `ErrorPage`, `OpengraphImage`). `poweredByHeader` off. Added GitHub Actions CI running `npm run check` (unit tests: 17). Logging reviewed and left as is: build errors name the file, runtime errors go to `console.error` until Sentry is wired.
 - **2026-09-29**: Header reduced to name + "Get in touch" at all sizes. Removed the Work/About links, the Work mega-menu (with its 3D tilt) and the mobile menu, along with `navigation-menu`, `sheet`, `mobile-nav`, the `scale-in/out` keyframes and two Radix packages (all recoverable from `2b3741e`). `mainNav` is now `footerNav`. E2E builds use a separate `.next-e2e` folder, so they can run alongside `npm run dev`, and the web-server timeout is 10 min for busy machines.
 - **2026-09-29**: Switched to a **one-page site**. Home now holds Work, About (bio, experience, skills, FAQ, résumé) and Contact as anchored sections. The standalone `/about`, `/projects` and `/contact` pages are removed and 308-redirect to their sections. Case studies keep `/projects/[slug]` with an "All work" back link. The nav is Work · About, plus the "Get in touch" button. `ProfilePage` and FAQ JSON-LD moved to `/`. The sample post is now a draft, so Writing (nav, sitemap, `/writing`) stays hidden until there are real posts. The sitemap and llms.txt are updated; tests cover redirects, anchors and the hidden Writing section (38 e2e).
 - **2026-09-29**: Removed the duplicate "Contact" nav link on desktop; the "Get in touch" button covers it. It stays in the mobile menu, where the button is hidden, and in the footer. Covered by a header test in `e2e/quality.spec.ts`.
