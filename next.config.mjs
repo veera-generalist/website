@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // E2E builds use their own folder so they don't clash with a running `next dev` (.next).
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   // Self-contained server build for Docker / Cloud Run (SafetyWing self-hosts on GCP).
   output: "standalone",
   poweredByHeader: true,

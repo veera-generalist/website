@@ -15,9 +15,11 @@ export default defineConfig({
   // System Chrome: no browser download needed.
   projects: [{ name: "chrome", use: { ...devices["Desktop Chrome"], channel: "chrome" } }],
   webServer: {
-    command: `npm run build && npx next start -p ${PORT}`,
+    // Separate distDir: safe to run while `npm run dev` is using .next.
+    command: `NEXT_DIST_DIR=.next-e2e npm run build && NEXT_DIST_DIR=.next-e2e npx next start -p ${PORT}`,
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
-    timeout: 240_000,
+    // A production build can take minutes on a busy machine (dev server, browsers open).
+    timeout: 600_000,
   },
 });

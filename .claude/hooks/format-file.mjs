@@ -9,7 +9,7 @@ const BIN = path.join(ROOT, "node_modules/.bin");
 const PRETTIER = /\.(tsx?|jsx?|mjs|cjs|json|css|md|mdx|ya?ml)$/;
 const ESLINT = /\.tsx?$/;
 const SKIP =
-  /(^|\/)(node_modules|\.next|public|\.playwright-mcp|playwright-report|test-results|coverage)\//;
+  /(^|\/)(node_modules|\.next|\.next-e2e|public|\.playwright-mcp|playwright-report|test-results|coverage)\//;
 
 let input = "";
 process.stdin.on("data", (chunk) => (input += chunk));
